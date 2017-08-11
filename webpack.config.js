@@ -44,9 +44,3 @@ module.exports = {
     contentBase: './'
   }
 };
-
-
-if(process.env.NODE_ENV === 'production'){
-    config.entry = './src/index.js';
-    config.plugins = []
-}
