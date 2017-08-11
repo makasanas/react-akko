@@ -10,4 +10,4 @@ webApp.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '/index.html'));
 })
  
-webApp.listen(3000);
+webApp.listen(process.env.PORT);
