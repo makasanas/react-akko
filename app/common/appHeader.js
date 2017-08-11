@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Router, browserHistory, Route, IndexRoute, Redirect, Link } from 'react-router';
+import profile from './../assets/img/laurahusson.jpg';
+import favicon from './../assets/img/favicon.png';
 import ChangeHome from './changeHome';  
 
 class AppHeader extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {                                  
             popup:false,
         }
     } 
@@ -18,7 +20,7 @@ class AppHeader extends Component {
                 </div>
                 <div className="profile">
                     <div className="img">
-                        <img src="/assets/img/laurahusson.jpg" alt={"profile"}/>
+                        <img src={profile} alt={"profile"} />
                     </div>
                     <div className="name">
                         <p>Welcome, <br/>
@@ -64,4 +66,4 @@ class AppHeader extends Component {
 
 
 
-export default AppHeader;
+export default AppHeader;       

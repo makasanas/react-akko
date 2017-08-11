@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../common/Header';
+import gas from './../assets/img/gasShutoff.jpg';
+import water from './../assets/img/waterShutoff.jpg';
+import electrical from './../assets/img/electricalShutoff.jpg';         
 import { housesData, assetTypeCountsData } from '../actions/index';
 
 class Dashboard extends Component { 
@@ -83,7 +86,7 @@ class Dashboard extends Component {
                                     <h3>Gas</h3>
                                 </div>
                                 <div className="icon">
-                                    <img src="/assets/img/gas-shutoff.JPG" alt={"gas"}/>
+                                    <img src={gas} alt={"gas"}/>
                                 </div>
                             </div>
                             <div className="item">
@@ -91,7 +94,7 @@ class Dashboard extends Component {
                                     <h3>Water</h3>
                                 </div>
                                 <div className="icon">
-                                    <img src="/assets/img/water-shutoff.JPG" alt={"water"}/>
+                                    <img src={water} alt={"water"}/>
                                 </div>
                             </div>
                             <div className="item">
@@ -99,7 +102,7 @@ class Dashboard extends Component {
                                     <h3>Electricity</h3>
                                 </div>
                                 <div className="icon">
-                                    <img src="/assets/img/electrical-shutoff.JPG" alt={"electrical"}/>
+                                    <img src={electrical} alt={"electrical"}/>
                                 </div>
                             </div>
                         </div>

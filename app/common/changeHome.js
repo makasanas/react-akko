@@ -13,7 +13,6 @@ class ChangeHome extends Component {
 
     componentWillMount(){ 
         this.props.housesData().then(function(response){
-            console.log(response);
             if(localStorage.getItem("homeId") === null){
                 localStorage.setItem("homeId", response.payload.data[0].id);
                 localStorage.setItem("homeName", response.payload.data[0].address1);
@@ -22,7 +21,6 @@ class ChangeHome extends Component {
     }   
 
     handlerChangeHome(id, name){
-        console.log('fd');
         localStorage.setItem("homeId", id);
         localStorage.setItem("homeName", name);
         this.setState({update:false});

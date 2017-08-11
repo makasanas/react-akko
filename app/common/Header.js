@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Router, browserHistory, Route, IndexRoute, Redirect, Link } from 'react-router';
-import './custom.scss';     
+import logo from './../assets/img/logo4.png'
+import './custom.scss';                 
 
 class Header extends Component {
     constructor(props) {
@@ -31,8 +32,8 @@ class Header extends Component {
                     <div className="container">
                         <div className="head clearfix">
                             <div className="logo">
-                                 <Link to="index.html">
-                                     <img src="assets/img/logo4.png" alt={"logo"}/>
+                                 <Link to="\">
+                                     <img src={logo} alt={"logo"}/>
                                 </Link>
                             </div>
                             <div className="menu">
