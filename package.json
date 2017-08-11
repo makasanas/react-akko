@@ -12,7 +12,7 @@
     "test:watch": "npm run test -- --watch",
     "build": "webpack",
     "server": "node server.js",
-    "postinstall": "webpack -p --config webpack.config.server.js"
+    "postinstall": "webpack -p"
   },
   "author": "",
   "license": "ISC",
