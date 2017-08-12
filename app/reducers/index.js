@@ -4,6 +4,7 @@ import housesReducer from './houses';
 import assetTypeCountsReducer from './assetTypeCounts';
 import assetReducer from './asset';
 import assetTypeReducer from './assetType';
+import forgotPasswordReducer from './forgotPassword';
 
 const rootReducer = combineReducers({
   	loginStatus: loginReducer,
@@ -11,6 +12,8 @@ const rootReducer = combineReducers({
   	assetTypeCounts: assetTypeCountsReducer,
   	asset: assetReducer,
   	assetType: assetTypeReducer,
+  	forgotPassword:forgotPasswordReducer
+
 });
 
 export default rootReducer;

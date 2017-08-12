@@ -18,6 +18,16 @@ export function loginStatus(data) {
 	};
 }
 
+export const forgotPassword = 'forgotPassword';		
+export function forgotPasswordRequest(data) {
+	const request = axios.post(`${ROOT_URL}/rest-auth/password/reset/`, data);	
+
+	return{
+		type:forgotPassword,	
+		payload:request		
+	};
+}
+
 export const houses = 'houses';
 export function housesData() {		
 	const request = axios.get(`${ROOT_URL}/api/home/houses/`, config);	
@@ -46,9 +56,15 @@ export function assetTypeCountsData(id) {
 	};
 }
 
-export const asset = 'asset';
-export function assetData(id) {		
-	const request = axios.get(`${ROOT_URL}/api/home/houses/`+id+`/assets/`, config);						
+export const asset = 'asset';		
+export function assetData(id,type) {
+	var request = '';
+	if(type == undefined){
+		request = axios.get(`${ROOT_URL}/api/home/houses/`+id+`/assets/`, config);
+	}else{
+		request = axios.get(`${ROOT_URL}/api/home/houses/`+id+`/assets/?type=`+type, config);	
+	}		
+						
 	return{
 		type:asset,	
 		payload:request		

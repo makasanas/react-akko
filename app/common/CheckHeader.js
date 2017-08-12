@@ -26,6 +26,7 @@ class CheckHeader extends Component{
 	handlerChangeHome(id,name){
 		this.setState({homeId:id});
 		this.setState({homeName:name});
+		this.setState({popup:false});
     }
 
 	render() {
