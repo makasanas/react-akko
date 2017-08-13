@@ -15,10 +15,6 @@ class CatalogTable extends Component {
         this.setState({ homeId: this.props.homeId });
     }
 
-    componentWillMount(){ 
-        this.props.assetData(this.props.homeId);            
-    }
-
     renderItem(items){
         return items.map((item, index) => {
             return (

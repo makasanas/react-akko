@@ -3,13 +3,28 @@ import { connect } from 'react-redux';
 import { Router, browserHistory, Route, IndexRoute, Redirect } from 'react-router';
 import {Form, Field} from 'simple-react-forms';
 import LoginForm from './LoginForm';
+import ForgetPassword from './forgetPassword';
 import { loginStatus } from '../actions/index';
 
 class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            popup:false,
+        }
+
+        this.forgetPasswordPopup = this.forgetPasswordPopup.bind(this);
     }           
     
+    forgetPasswordPopup() {
+        console.log(this.state.popup);
+        if(!this.state.popup){
+            this.setState({popup:true});
+        }else{
+            this.setState({popup:false});
+        }
+    } 
+
     render(){
         if(localStorage.getItem("isAuthenticated") == "true"){
             browserHistory.push('/dashboard');
@@ -25,21 +40,9 @@ class Login extends Component {
                             </div>  
                             <div className="filed clearfix">
                                 <div className="filedbox active" id="login">
-                                   <LoginForm/>
+                                   <LoginForm forgetPasswordPopup={this.forgetPasswordPopup}/>
                                 </div>
-                                <div className="forgetPassword ">
-                                    <div className="form">
-                                        <div className="close">X</div>              
-                                        <h1>Forgot Password</h1>
-                                        <div className="input">
-                                            <label>E-mail</label>
-                                            <input type="text" id="email" placeholder="E-mail"/>
-                                        </div>
-                                        <div className="input">
-                                            <div className="btn">Submit</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <ForgetPassword popup={this.state.popup} forgetPasswordPopup={this.forgetPasswordPopup}/>
                             </div>
                         </div>
                     </div>

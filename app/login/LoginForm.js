@@ -7,18 +7,15 @@ import { LoginFormValidator } from './LoginFormValidator';
 class LoginForm extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
           errors:{},
           serverError : false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
-    }       
-
+    }
 
     handleSubmit(e) {
-        e.preventDefault();
         this.setState({serverError:false});
         const formData = {};
         for (const field in this.refs) {
@@ -69,7 +66,7 @@ class LoginForm extends Component {
                         { errors.password && <p>{errors.password}</p>}
                     </div>
                     <div className="password clearfix">     
-                        <a >Forgot Password?</a>
+                        <a  onClick={this.props.forgetPasswordPopup.bind(this)}>Forgot Password?</a>
                     </div>
                     <div className="input">
                         <div className="btn" onClick={this.handleSubmit}>Login</div>
