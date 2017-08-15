@@ -1,6 +1,6 @@
 import  axios from 'axios';
 	
-const ROOT_URL = 'https://cloudhome-staging.herokuapp.com';
+const ROOT_URL = process.env.BACKEND_URL || 'https://cloudhome-staging.herokuapp.com';
 
 var config = {
     headers: {
