@@ -25,7 +25,7 @@
     "eslint": "eslint .",
     "jscs": "jscs .",
     "nodeServer":"node nodeserver.js",
-    "postinstall": "npm run clean && npm run build"
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "babel-cli": "^6.4.0",
