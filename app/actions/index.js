@@ -49,7 +49,7 @@ export function assetTypeData(id) {
 
 export const assetTypeCounts = 'assetTypeCounts';
 export function assetTypeCountsData(id) {		
-	const request = axios.get(`${ROOT_URL}/api/home/houses/`+id+`/asset-type-counts`);						
+	const request = axios.get(`${ROOT_URL}/api/home/assets?house=`+id);						
 	return{
 		type:assetTypeCounts,	
 		payload:request		
@@ -71,3 +71,75 @@ export function assetData(id,type) {
 	};
 }
 
+export const locations = 'locations';		
+export function locationsData(id) {
+	const request = axios.get(`${ROOT_URL}/api/home/locations?house=`+id);						
+	return{
+		type:locations,	
+		payload:request		
+	};
+}
+
+
+export const catalogOptions = 'catalogOptions';		
+export function catalogOptionsData(category) {
+	const request = axios.options(`${ROOT_URL}/api/catalog/`+category, config);						
+	return{
+		type:catalogOptions,	
+		payload:request		
+	};
+}
+
+export const assetsOptions = 'assetsOptions';		
+export function assetsOptionsData(category) {
+	const request = axios.options(`${ROOT_URL}/api/home/assets/`+category, config);						
+	return{
+		type:assetsOptions,	
+		payload:request		
+	};
+}
+
+export const catalogPost = 'catalogPost';		
+export function catalogPostData(category,data) {
+	const request = axios.post(`${ROOT_URL}/api/catalog/`+category, data);						
+	return dispatch => {
+		dispatch({ type: catalogPost, payload:request }).then(function(res){
+			console.log(res);
+			data['item'] = res.payload.data.id;
+			console.log(data);
+			return dispatch(assetsPostData(category, data));
+		})
+	};
+}
+
+export const assetsPost = 'assetsPost';		
+export function assetsPostData(category,data) {			
+	const request = axios.post(`${ROOT_URL}/api/home/assets/`+category, data);						
+	return{
+		type:assetsPost,	
+		payload:request
+	};
+}
+
+
+export const catalogUpdate = 'catalogUpdate';		
+export function catalogUpdateData(category,data,id, itemId) {
+	const request = axios.put(`${ROOT_URL}/api/catalog/`+category+itemId, data);						
+	return dispatch => {
+		dispatch({ type: catalogUpdate, payload:request }).then(function(res){
+			console.log(res);
+			data['item'] = itemId;
+			console.log(data);
+			return dispatch(assetsUpdateData(category, data, id));
+		})
+	};
+}
+
+export const assetsUpdate = 'assetsUpdate';		
+export function assetsUpdateData(category,data,id) {			
+	const request = axios.put(`${ROOT_URL}/api/home/assets/`+category+id, data);						
+	return{
+		type:assetsUpdate,	
+		payload:request
+	};
+}

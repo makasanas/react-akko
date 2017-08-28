@@ -822,7 +822,11 @@ table{
         color: rgb(60, 65, 68);
         &:focus{
             border: solid 1px $brand_color;
-        }
+        }  
+        &.error{
+            border: solid 1px #ff2f2f;
+        }             
+        
     }
     textarea{
         height: 109px;
@@ -856,6 +860,16 @@ table{
             color: #ff2f2f;
             padding: 5px;
         }
+    }
+    p.error{
+        color: #ff2f2f;
+        padding: 5px;
+    }
+    &.hide{             
+        display: none;
+    }
+    &.show{
+        display: block;
     }
 }
 h3{

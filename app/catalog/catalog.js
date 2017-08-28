@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../common/Header';
 import CatalogTable from './catalogTable';
-import { assetTypeData, assetData } from '../actions/index';
+import CatalogModal from './catalogModal';
+import { assetTypeCountsData, assetData } from '../actions/index';
 
 class Catalog extends Component {
 
@@ -12,14 +13,16 @@ class Catalog extends Component {
             assetTypeValue: this.props.location.state != null &&
 typeof this.props.location.state.assetTypeValue != null ? this.props.location.state.assetTypeValue : 'all',
             homeId:this.props.homeId,
+            model:true,            
+            itemMode:"Add",
+            itemValue:{}
         }
+        this.addPopup = this.addPopup.bind(this);
+        this.updatePopup = this.updatePopup.bind(this);
     }       
 
     componentWillMount(){ 
-        this.props.assetTypeData();
-
-        console.log(this.props.location.state);
-
+        this.props.assetTypeCountsData(this.props.homeId);
         if(this.state.assetTypeValue == 'all'){         
             this.props.assetData(this.props.homeId);     
         }else{
@@ -29,8 +32,6 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
 
     assetTypeChange(event){
         this.setState({assetTypeValue: event.target.value});
-
-        console.log(this.state.assetTypeValue);
         if(event.target.value == 'all'){     
             this.props.assetData(this.props.homeId);     
         }else{
@@ -52,22 +53,37 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
         })
     }
 
-    render(){ 
-       console.log('all state',this.props);
-        console.log(this.props.assetType);            
+    addPopup(){
+        this.setState({
+            model:!this.state.model,
+            itemMode:"Add",
+        });
+    }
+
+    updatePopup(item){
+        console.log(item);
+        this.setState({
+            model:!this.state.model,
+            itemMode:"Update",
+            itemValue:item
+        });             
+    }
+
+
+    render(){            
         return (
         	<div className="rightside">    
                 <Header/>   
                 <div className="content catalog">
                     <div className="tilte clearfix">
                         <h1>Item Catalog</h1>
-                        <div className="btn">Add Item</div>
+                        <div className="btn" onClick={this.addPopup}>Add Item</div>
                     </div>
                     <div className="filter clearfix">
                         <div className="left">
                             <div className="input">
                                 <select onChange={this.assetTypeChange.bind(this)} value={this.state.assetTypeValue}>
-                                    {this.renderAssetType(this.props.assetType)}
+                                    {this.renderAssetType(Object.assign(this.props.assetTypeCounts))}
                                 </select>
                             </div>
                         </div>
@@ -76,9 +92,10 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
                                 <input type="text" placeholder="Search item" />
                             </div>
                         </div>
-                    </div>
-                    <CatalogTable homeId={this.props.homeId} asset={this.props.asset} assetTypeChange={this.assetTypeChange} assetTypeValue={this.state.assetTypeValue}/>
+                    </div>      
+                    <CatalogTable homeId={this.props.homeId} asset={this.props.asset} assetTypeChange={this.assetTypeChange} assetTypeValue={this.state.assetTypeValue} updatePopup={this.updatePopup}/>
                 </div>
+                <CatalogModal homeId={this.props.homeId} itemValue={this.state.itemValue} model={this.state.model} itemMode={this.state.itemMode} addPopup={this.addPopup} assetTypeCounts={this.props.assetTypeCounts}/>            
             </div>
         );
     }
@@ -86,9 +103,9 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
 
 function mapStateToProps(state) {
     return { 
-        assetType: state.assetType.all,
+        assetTypeCounts: state.assetTypeCounts.all,
         asset: state.asset.all
     };                  
 }
 
-export default connect(mapStateToProps, { assetTypeData, assetData })( Catalog ); 
+export default connect(mapStateToProps, { assetTypeCountsData, assetData })( Catalog ); 
