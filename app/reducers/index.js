@@ -12,6 +12,8 @@ import assetsPostReducer from './assetsPost';
 import catalogPostReducer from './catalogPost';
 import catalogUpdateReducer from './catalogUpdate';
 import assetsUpdateReducer from './assetsUpdate';
+import catalogDeleteReducer from './catalogDelete';
+import assetsDeleteReducer from './assetsDelete';
 
 const rootReducer = combineReducers({
   	loginStatus: loginReducer,
@@ -26,7 +28,9 @@ const rootReducer = combineReducers({
   	assetsPost:assetsPostReducer,
   	catalogPost:catalogPostReducer,
     catalogUpdate:catalogUpdateReducer,
-    assetsUpdate:assetsUpdateReducer
+    assetsUpdate:assetsUpdateReducer,
+    catalogDelete:catalogDeleteReducer,
+    assetsDelete:assetsDeleteReducer
 });
 
 export default rootReducer;

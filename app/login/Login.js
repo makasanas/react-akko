@@ -17,12 +17,7 @@ class Login extends Component {
     }           
     
     forgetPasswordPopup() {
-        console.log(this.state.popup);
-        if(!this.state.popup){
-            this.setState({popup:true});
-        }else{
-            this.setState({popup:false});
-        }
+        this.setState({popup:!this.state.popup});
     } 
 
     render(){

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Header from '../common/Header';
 import CatalogTable from './catalogTable';
 import CatalogModal from './catalogModal';
-import { assetTypeCountsData, assetData } from '../actions/index';
+import { assetTypeCountsData, assetData, catalogOptionsData, assetsOptionsData, catalogDeleteData, assetsDeleteData } from '../actions/index';
 
 class Catalog extends Component {
 
@@ -19,6 +19,8 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
         }
         this.addPopup = this.addPopup.bind(this);
         this.updatePopup = this.updatePopup.bind(this);
+        this.closePopup = this.closePopup.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
     }       
 
     componentWillMount(){ 
@@ -41,27 +43,43 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
 
     renderAssetType(filters){
         return filters.map((filter, index) => {
-            if(filters[0].key != 'all'){            
-                filters.unshift({
-                    key:'all',
-                    name:'All'
-                });
-            }
             return (
                 <option value={filter.key} key={filter.key}>{filter.name}</option>
             )
         })
     }
 
+    closePopup(){
+        this.setState({
+            model:!this.state.model,
+        });
+        if(this.state.assetTypeValue == 'all'){         
+            this.props.assetData(this.props.homeId);     
+        }else{
+            this.props.assetData(this.props.homeId, this.state.assetTypeValue); 
+        }  
+    }
+
     addPopup(){
         this.setState({
             model:!this.state.model,
             itemMode:"Add",
+            itemValue:{}                    
         });
     }
 
+    deleteItem(item){
+        const category = item.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase().split("/");
+        console.log(item.id, item.item.id, category[0]);
+        this.props.catalogDeleteData(category[0]+"/", item.id, item.item.id, this.state.assetTypeValue , this.state.homeId);
+    }
+
     updatePopup(item){
-        console.log(item);
+        const category = item.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase().split("/");
+        item.category = category[0];
+        this.props.assetsOptionsData(item.category);
+        this.props.catalogOptionsData(item.category);
+        console.log();
         this.setState({
             model:!this.state.model,
             itemMode:"Update",
@@ -70,7 +88,8 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
     }
 
 
-    render(){            
+    render(){  
+        console.log(this.props.asset);          
         return (
         	<div className="rightside">    
                 <Header/>   
@@ -83,6 +102,7 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
                         <div className="left">
                             <div className="input">
                                 <select onChange={this.assetTypeChange.bind(this)} value={this.state.assetTypeValue}>
+                                    <option value='all'>All</option>
                                     {this.renderAssetType(Object.assign(this.props.assetTypeCounts))}
                                 </select>
                             </div>
@@ -93,9 +113,9 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
                             </div>
                         </div>
                     </div>      
-                    <CatalogTable homeId={this.props.homeId} asset={this.props.asset} assetTypeChange={this.assetTypeChange} assetTypeValue={this.state.assetTypeValue} updatePopup={this.updatePopup}/>
+                    <CatalogTable homeId={this.props.homeId} asset={this.props.asset} assetTypeChange={this.assetTypeChange} assetTypeValue={this.state.assetTypeValue} updatePopup={this.updatePopup} deleteItem={this.deleteItem}/>
                 </div>
-                <CatalogModal homeId={this.props.homeId} itemValue={this.state.itemValue} model={this.state.model} itemMode={this.state.itemMode} addPopup={this.addPopup} assetTypeCounts={this.props.assetTypeCounts}/>            
+                <CatalogModal homeId={this.props.homeId} catalogOptions={this.props.catalogOptions} assetsOptions={this.props.assetsOptions} itemValue={this.state.itemValue} model={this.state.model} itemMode={this.state.itemMode} closePopup={this.closePopup} assetTypeCounts={this.props.assetTypeCounts}/>            
             </div>
         );
     }
@@ -104,8 +124,12 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
 function mapStateToProps(state) {
     return { 
         assetTypeCounts: state.assetTypeCounts.all,
-        asset: state.asset.all
+        asset: state.asset.all,
+        catalogOptions: state.catalogOptions.all,
+        assetsOptions: state.assetsOptions.all,
+        catalogDelete:state.catalogDelete.all,
+        assetsDelete:state.assetsDelete.all
     };                  
 }
 
-export default connect(mapStateToProps, { assetTypeCountsData, assetData })( Catalog ); 
+export default connect(mapStateToProps, { assetTypeCountsData,assetsOptionsData, catalogOptionsData, assetData, catalogDeleteData, assetsDeleteData })( Catalog ); 

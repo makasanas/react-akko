@@ -122,24 +122,27 @@ export function assetsPostData(category,data) {
 }
 
 
-export const catalogUpdate = 'catalogUpdate';		
-export function catalogUpdateData(category,data,id, itemId) {
-	const request = axios.put(`${ROOT_URL}/api/catalog/`+category+itemId, data);						
+export const catalogDelete = 'catalogDelete';		
+export function catalogDeleteData(category,id,itemId,type,homeId) {
+	const request = axios.delete(`${ROOT_URL}/api/catalog/`+category+itemId);	
+
 	return dispatch => {
-		dispatch({ type: catalogUpdate, payload:request }).then(function(res){
-			console.log(res);
-			data['item'] = itemId;
-			console.log(data);
-			return dispatch(assetsUpdateData(category, data, id));
+		dispatch({ type: catalogDelete, payload:request }).then(function(res){
+			if(type === 'all' ){
+				return dispatch(assetData(homeId, undefined));
+			}else{
+				return dispatch(assetData(homeId,type));
+			}
+			
 		})
 	};
 }
 
-export const assetsUpdate = 'assetsUpdate';		
-export function assetsUpdateData(category,data,id) {			
-	const request = axios.put(`${ROOT_URL}/api/home/assets/`+category+id, data);						
+export const assetsDelete = 'assetsDelete';		
+export function assetsDeleteData(category,id) {			
+	const request = axios.delete(`${ROOT_URL}/api/home/assets/`+category+id);						
 	return{
-		type:assetsUpdate,	
+		type:assetsDelete,	
 		payload:request
 	};
 }

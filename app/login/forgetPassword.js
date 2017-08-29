@@ -8,19 +8,14 @@ class ForgetPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            update:true,
-            errors:{},          
-            serverError : false
+            update:false,
+            errors:{},   
+            serverError : false,
+            server: false,  
         }
-
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillMount(){ 
-        this.state = {
-            update:false
-        }
-    }  
 
     handleSubmit(e) {
         this.setState({serverError:false});
@@ -32,19 +27,24 @@ class ForgetPassword extends Component {
        console.log(formData);
 
        const { errors, isValid } = ForgetPasswordValidator(formData);
-
+       
         this.setState({
             errors: errors,
             isValid : isValid
         })
-
         if(isValid){
             this.props.forgotPasswordRequest(formData).then((response) => {
-                console.log(response)
+                console.log(response);
                 if(!response.error){
                     this.setState({serverError:false});
+                    this.setState({server:true});
+                    // window.setTimeout(
+                    //     this.props.forgetPasswordPopup(), 
+                    // 3000);
                 }else{
                     this.setState({serverError:true});
+                    this.setState({server:false});
+                     
                 }
             });    
         }
@@ -53,7 +53,7 @@ class ForgetPassword extends Component {
     
 
     render(){
-        const { errors, serverError } = this.state;
+        const { server, errors, serverError } = this.state;
         return (
             <div className={this.props.popup ? 'forgetPassword active' :  'forgetPassword'}>
                 <div className="form">
@@ -62,11 +62,17 @@ class ForgetPassword extends Component {
                             <p className="center">Email or password is incorrect</p>
                         </div>
                     }
+                    { server && 
+                        <div className="info">
+                            <p className="center">Password reset e-mail has been sent check you mail.</p>
+                        </div>
+                    }
                     <div className="close" onClick={this.props.forgetPasswordPopup.bind(this)}>X</div>              
                     <h1>Forgot Password</h1>
-                    <div className="input">
+                    <div className={ errors.femail ? 'input error' :  'input'}>
                         <label>E-mail</label>
                         <input ref="email" type="text" id="email" placeholder="E-mail"/>
+                        { errors.femail && <p>{errors.femail}</p>}
                     </div>
                     <div className="input">
                         <div className="btn" onClick={this.handleSubmit}>Submit</div>

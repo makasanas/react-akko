@@ -50,7 +50,7 @@ class CatalogModal extends Component {
             this.setState({
                 assetTypeValue:event.target.value
             });
-         }
+        }
         
     }
 
@@ -67,17 +67,14 @@ class CatalogModal extends Component {
                         option[val] = true;
                     }
                 );
-               console.log(Object1,Object2,option);
             }
         }
-        console.log("option",option)
         return option;
     }
 
     handleChange(name,event) {
         const items = this.state.itemValue;
         items[name] = event.target.value;
-        console.log(items);
         this.setState({
             items
         });
@@ -89,52 +86,58 @@ class CatalogModal extends Component {
           formData[field] = this.refs[field].value;
         }
 
-        const { errors, isValid } = CatalogFormValidator(formData);
+        const { errors, isValid } = CatalogFormValidator(formData, this.props.itemMode);
         this.setState({
           errors: errors,
           isValid : isValid
         })
 
-        console.log(isValid,errors );
+        console.log(isValid,errors);
 
         if(isValid){
             if(this.props.itemMode === "Add"){
-                this.props.catalogPostData(formData.category, formData); 
+                this.props.catalogPostData(formData.category, formData);
+                this.props.closePopup();
             }else{
-                 this.props.catalogUpdateData(formData.category, formData, this.state.itemValue.id, this.state.itemValue.itemId); 
+                 this.props.catalogUpdateData(this.state.itemValue.category+"/", formData, this.state.itemValue.id, this.state.itemValue.itemId); 
+                 this.props.closePopup();               
             } 
         }
     }
 
-    componentWillReceiveProps() {
-        console.log(this.props.itemMode)
-        if(this.props.itemMode !== "Add"){
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+        if(nextProps.itemMode !== "Add"){
+            const category = nextProps.itemValue.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase().split("/");
+            console.log(category[0]); 
             const itemValue = {
-                id:this.props.itemValue.id,
-                locationName:this.props.itemValue.location.name,
-                location:this.props.itemValue.location.id,
-                quantity:this.props.itemValue.quantity,
-                notes:this.props.itemValue.notes,
-                itemId:this.props.itemValue.item.id,
-                brand:this.props.itemValue.item.brand,
-                manual_url:this.props.itemValue.item.manual_url,
-                serial_number:this.props.itemValue.item.serial_number,
-                model_number:this.props.itemValue.item.model_number,
-                replace_part_number:this.props.itemValue.item.replace_part_number,
-                description:this.props.itemValue.item.description,
-                type:this.props.itemValue.item.type,
-                shape:this.props.itemValue.item.shape,
-                bulb_size:this.props.itemValue.item.bulb_size,
-                base:this.props.itemValue.item.base,
-                watts:this.props.itemValue.item.watts,
-                max_watts:this.props.itemValue.item.max_watts,
-                lumens:this.props.itemValue.item.lumens,
-                color:this.props.itemValue.item.color,
-                fixture:this.props.itemValue.item.fixture,
+                id:nextProps.itemValue.id,
+                category: nextProps.itemValue.category,
+                locationName:nextProps.itemValue.location.name,
+                location:nextProps.itemValue.location.id,
+                quantity:nextProps.itemValue.quantity,
+                notes:nextProps.itemValue.notes,
+                itemId:nextProps.itemValue.item.id,
+                brand:nextProps.itemValue.item.brand,
+                manual_url:nextProps.itemValue.item.manual_url,
+                serial_number:nextProps.itemValue.item.serial_number,
+                model_number:nextProps.itemValue.item.model_number,
+                replace_part_number:nextProps.itemValue.item.replace_part_number,
+                description:nextProps.itemValue.item.description,
+                type:nextProps.itemValue.item.type,
+                shape:nextProps.itemValue.item.shape,
+                bulb_size:nextProps.itemValue.item.bulb_size,
+                base:nextProps.itemValue.item.base,
+                watts:nextProps.itemValue.item.watts,
+                max_watts:nextProps.itemValue.item.max_watts,
+                lumens:nextProps.itemValue.item.lumens,
+                color:nextProps.itemValue.item.color,
+                fixture:nextProps.itemValue.item.fixture,
             }
             this.setState({itemValue:itemValue});
         }else{
-            this.setState({itemValue:this.props.itemValue});
+            this.setState({itemValue:nextProps.itemValue});
         }
     }
 
@@ -156,17 +159,20 @@ class CatalogModal extends Component {
     }   
 
     render(){
-        console.log(this.state.itemValue);
+        console.log(this.state.itemValue.category);
         console.log(this.props.itemMode);
         const option = this.updateState(this.props.catalogOptions, this.props.assetsOptions, this.state.assetTypeValue);
-
+        // if(this.props.itemMode !== "Add"){
+        //     const option = this.updateState(this.props.catalogOptions, this.props.assetsOptions, this.state.assetTypeValue);
+        // }
+       
         const { errors, serverError } = this.state;         
         return (
             <div className={!this.props.model ? 'modal active':'modal'}  >
                 <div className="box">
                     <div className="content addCatalog">
                         <div className="tilte clearfix">
-                            <h1>Add Item </h1>
+                            <h1>{this.props.itemMode} Item </h1>
                             <div className="btn" onClick={this.addOREditItem}>{this.props.itemMode} Item</div>
                         </div>
                         <form name="salonForm" className="ng-pristine ng-valid-email ng-valid ng-valid-required">
@@ -174,7 +180,7 @@ class CatalogModal extends Component {
                                 <div className="">
                                     <div className="input">
                                         <label>Category</label>
-                                        <select className={ errors.category ? 'error' :  ''} ref="category" onChange={this.assetTypeChange.bind(this)} >
+                                        <select className={ errors.category ? 'error' :  ''} ref="category" onChange={this.assetTypeChange.bind(this)}  disabled={this.props.itemMode === "Update" ? true:false}>
                                             <option value='none'></option>
                                             {this.renderAssetType(this.props.assetTypeCounts)}
                                         </select>
@@ -183,10 +189,11 @@ class CatalogModal extends Component {
                                 </div>
                                 <div className={ option.location ? 'input show' :  'input hide'} >
                                     <label>Location name</label>
-                                    <select ref="location" value={this.state.itemValue.location} onChange={this.handleChange.bind(this, "location")} >
-                                        <option value=''></option>
+                                    <select className={ errors.location ? 'error' :  ''} ref="location" value={this.state.itemValue.location} onChange={this.handleChange.bind(this, "location")} >
+                                        <option value='none'></option>
                                         {this.renderLocations(this.props.locations)}
                                     </select>
+                                    { errors.location && <p  className="error">{errors.location}</p>}
                                 </div>
                             </div>
                             <div className="group clearfix">
@@ -279,12 +286,13 @@ class CatalogModal extends Component {
                             </div>
                             <div className="single clearfix">
                                 <div className="input">
-                                    <div className="btn">{this.props.itemMode} Item</div>
+                                    <div className="btn" onClick={this.addOREditItem}>{this.props.itemMode} Item</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
+                <div className="overlay" onClick={this.props.closePopup.bind(this)}></div>
             </div>
         );
     }
