@@ -21,11 +21,9 @@ class CatalogModal extends Component {
     
     renderAssetType(filters){  
         return filters.map((filter, index) => {
-            if(index != 0){
-                return (
-                    <option value={filter.url.replace(ROOT_URL+'/api/home/assets/', '').toLowerCase()} key={filter.key}>{filter.name}</option>
-                )
-            }
+            return (
+                <option value={filter.url.replace(ROOT_URL+'/api/home/assets/', '').toLowerCase()} key={filter.key}>{filter.name}</option>
+            )
         })
     }
 
@@ -38,7 +36,6 @@ class CatalogModal extends Component {
     }
 
     assetTypeChange(event){
-        console.log(event.target.value);
         if(event.target.value !== 'none'){
             this.props.assetsOptionsData(event.target.value);
             this.props.catalogOptionsData(event.target.value);
@@ -56,10 +53,8 @@ class CatalogModal extends Component {
 
     updateState(Object1, Object2, value){
         var option = {};
-        console.log(value);
         if(value  !== 'none'){
             if(Object1.length == undefined && Object2.length == undefined){
-                console.log(Object1,Object2)
                 var obj = Object.assign(Object1.actions.POST, Object2.actions.POST);
                 option = {};
                 Object.getOwnPropertyNames(obj).forEach(
@@ -92,14 +87,13 @@ class CatalogModal extends Component {
           isValid : isValid
         })
 
-        console.log(isValid,errors);
 
         if(isValid){
             if(this.props.itemMode === "Add"){
-                this.props.catalogPostData(formData.category, formData);
+                this.props.catalogPostData(formData.category, formData, this.props.assetTypeValue, this.props.homeId);
                 this.props.closePopup();
             }else{
-                 this.props.catalogUpdateData(this.state.itemValue.category+"/", formData, this.state.itemValue.id, this.state.itemValue.itemId); 
+                 this.props.catalogUpdateData(this.state.itemValue.category+"/", formData, this.state.itemValue.id, this.state.itemValue.itemId,  this.props.assetTypeValue, this.props.homeId); 
                  this.props.closePopup();               
             } 
         }
@@ -109,7 +103,6 @@ class CatalogModal extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.itemMode !== "Add"){
             const category = nextProps.itemValue.url.replace(ROOT_URL+'/api/home/assets/','').toLowerCase().split("/");
-            console.log(category[0]); 
             const itemValue = {
                 id:nextProps.itemValue.id,
                 category: nextProps.itemValue.category,
@@ -140,30 +133,13 @@ class CatalogModal extends Component {
         }
     }
 
-    componentDidMount(){
-        
-        // setInterval(() => {
-        //     this.setState({
-        //         itemValue:this.props.itemValue
-        //     });
-        // }, 1000);
-    }
 
     componentWillMount(){ 
         this.props.locationsData(this.props.homeId);
-
-        // this.setState({
-        //     itemValue:this.props.itemValue
-        // })
     }   
 
     render(){
-        console.log(this.state.itemValue.category);
-        console.log(this.props.itemMode);
         const option = this.updateState(this.props.catalogOptions, this.props.assetsOptions, this.state.assetTypeValue);
-        // if(this.props.itemMode !== "Add"){
-        //     const option = this.updateState(this.props.catalogOptions, this.props.assetsOptions, this.state.assetTypeValue);
-        // }
        
         const { errors, serverError } = this.state;         
         return (

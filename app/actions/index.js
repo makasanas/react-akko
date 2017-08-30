@@ -1,6 +1,6 @@
 import  axios from 'axios';
-	
-export const ROOT_URL = process.env.BACKEND_URL || 'https://cloudhome-staging.herokuapp.com';
+console.log(process.env.API_HOST);
+export const ROOT_URL = process.env.API_HOST;
 
 var config = {
     headers: {
@@ -14,7 +14,7 @@ export function loginStatus(data) {
 	const request = axios.post(`${ROOT_URL}/rest-auth/login/`, data);
 	return{
 		type:login,	
-		payload:request		
+		payload:request			
 	};
 }
 
@@ -100,55 +100,60 @@ export function assetsOptionsData(category) {
 }
 
 export const catalogPost = 'catalogPost';		
-export function catalogPostData(category,data) {
+export function catalogPostData(category,data, type,homeId) {
 	const request = axios.post(`${ROOT_URL}/api/catalog/`+category, data);						
 	return dispatch => {
 		dispatch({ type: catalogPost, payload:request }).then(function(res){
-			console.log(res);
 			data['item'] = res.payload.data.id;
-			console.log(data);
-			return dispatch(assetsPostData(category, data));
+			return dispatch(assetsPostData(category, data, type,homeId));
 		})
 	};
 }
 
 export const assetsPost = 'assetsPost';		
-export function assetsPostData(category,data) {			
-	const request = axios.post(`${ROOT_URL}/api/home/assets/`+category, data);						
-	return{
-		type:assetsPost,	
-		payload:request
-	};
+export function assetsPostData(category,data,type,homeId) {			
+	const request = axios.post(`${ROOT_URL}/api/home/assets/`+category, data);	
+	return dispatch => {
+		dispatch({ type: assetsUpdate, payload:request }).then(function(res){
+			if(type === 'all' ){
+				return dispatch(assetData(homeId, undefined));
+			}else{
+				return dispatch(assetData(homeId,type));
+			}
+		})
+	};		
 }
 
 
 export const catalogUpdate = 'catalogUpdate';		
-export function catalogUpdateData(category,data,id,itemId) {
+export function catalogUpdateData(category,data,id,itemId,type,homeId) {
 	const request = axios.put(`${ROOT_URL}/api/catalog/`+category+itemId, data);	
 
 	return dispatch => {
 		dispatch({ type: catalogUpdate, payload:request }).then(function(res){
-			console.log(res);
 			data['item'] = itemId;
-			console.log(data);
-			return dispatch(assetsUpdateData(category, data, id));
+			return dispatch(assetsUpdateData(category, data, id, type,homeId));
 		})
 	};
 }
 
 export const assetsUpdate = 'assetsUpdate';		
-export function assetsUpdateData(category,data,id) {			
-	const request = axios.put(`${ROOT_URL}/api/home/assets/`+category+id, data);						
-	return{
-		type:assetsUpdate,	
-		payload:request
+export function assetsUpdateData(category,data,id, type,homeId) {			
+	const request = axios.put(`${ROOT_URL}/api/home/assets/`+category+id, data);
+	return dispatch => {
+		dispatch({ type: assetsUpdate, payload:request }).then(function(res){
+			if(type === 'all' ){
+				return dispatch(assetData(homeId, undefined));
+			}else{
+				return dispatch(assetData(homeId,type));
+			}
+		})
 	};
 }
 
 export const catalogDelete = 'catalogDelete';		
 export function catalogDeleteData(category,id,itemId,type,homeId) {
 	const request = axios.delete(`${ROOT_URL}/api/catalog/`+category+itemId);	
-
 	return dispatch => {
 		dispatch({ type: catalogDelete, payload:request }).then(function(res){
 			if(type === 'all' ){
@@ -156,7 +161,6 @@ export function catalogDeleteData(category,id,itemId,type,homeId) {
 			}else{
 				return dispatch(assetData(homeId,type));
 			}
-			
 		})
 	};
 }

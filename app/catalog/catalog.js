@@ -53,11 +53,6 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
         this.setState({
             model:!this.state.model,
         });
-        if(this.state.assetTypeValue == 'all'){         
-            this.props.assetData(this.props.homeId);     
-        }else{
-            this.props.assetData(this.props.homeId, this.state.assetTypeValue); 
-        }  
     }
 
     addPopup(){
@@ -70,7 +65,6 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
 
     deleteItem(item){
         const category = item.url.replace(ROOT_URL+'/api/home/assets/', '').toLowerCase().split("/");
-        console.log(item.id, item.item.id, category[0]);
         this.props.catalogDeleteData(category[0]+"/", item.id, item.item.id, this.state.assetTypeValue , this.state.homeId);
     }
 
@@ -79,7 +73,6 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
         item.category = category[0];
         this.props.assetsOptionsData(item.category);
         this.props.catalogOptionsData(item.category);
-        console.log();
         this.setState({
             model:!this.state.model,
             itemMode:"Update",
@@ -88,8 +81,7 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
     }
 
 
-    render(){  
-        console.log(this.props.asset);          
+    render(){      
         return (
         	<div className="rightside">    
                 <Header/>   
@@ -115,7 +107,7 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
                     </div>      
                     <CatalogTable homeId={this.props.homeId} asset={this.props.asset} assetTypeChange={this.assetTypeChange} assetTypeValue={this.state.assetTypeValue} updatePopup={this.updatePopup} deleteItem={this.deleteItem}/>
                 </div>
-                <CatalogModal homeId={this.props.homeId} catalogOptions={this.props.catalogOptions} assetsOptions={this.props.assetsOptions} itemValue={this.state.itemValue} model={this.state.model} itemMode={this.state.itemMode} closePopup={this.closePopup} assetTypeCounts={this.props.assetTypeCounts}/>            
+                <CatalogModal homeId={this.props.homeId} assetTypeValue={this.state.assetTypeValue} catalogOptions={this.props.catalogOptions} assetsOptions={this.props.assetsOptions} itemValue={this.state.itemValue} model={this.state.model} itemMode={this.state.itemMode} closePopup={this.closePopup} assetTypeCounts={this.props.assetTypeCounts}/>            
             </div>
         );
     }

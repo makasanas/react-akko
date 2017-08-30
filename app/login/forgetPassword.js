@@ -24,8 +24,6 @@ class ForgetPassword extends Component {
           formData[field] = this.refs[field].value;
         }
 
-       console.log(formData);
-
        const { errors, isValid } = ForgetPasswordValidator(formData);
        
         this.setState({
@@ -38,9 +36,6 @@ class ForgetPassword extends Component {
                 if(!response.error){
                     this.setState({serverError:false});
                     this.setState({server:true});
-                    // window.setTimeout(
-                    //     this.props.forgetPasswordPopup(), 
-                    // 3000);
                 }else{
                     this.setState({serverError:true});
                     this.setState({server:false});

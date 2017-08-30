@@ -34,7 +34,8 @@ module.exports = {
       modules: false
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.API_HOST': JSON.stringify('https://cloudhome-staging.herokuapp.com')
     })
   ],
   module: {
