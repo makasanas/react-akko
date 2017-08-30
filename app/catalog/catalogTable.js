@@ -29,6 +29,7 @@ class CatalogTable extends Component {
                             </div>
                         </div>
                     </td>
+                    <td>{item.asset_type_name}</td>
                     <td>{item.location.name}</td>
                     <td>{item.quantity}</td>
                     <td>{item.item.brand}</td>
@@ -64,6 +65,7 @@ class CatalogTable extends Component {
                     <thead>
                         <tr>
                             <th></th>       
+                            <th>Category</th>
                             <th>Location Name</th>
                             <th>Quantity</th>
                             <th>Brand</th>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { locationsData, catalogOptionsData, assetsOptionsData, catalogPostData, assetsPostData, catalogUpdateData, assetsUpdateData  } from '../actions/index';
+import { locationsData, catalogOptionsData, assetsOptionsData, catalogPostData, assetsPostData, catalogUpdateData, assetsUpdateData, ROOT_URL} from '../actions/index';
 import { CatalogFormValidator } from './catalogFormValidator';
 
 class CatalogModal extends Component {
@@ -19,11 +19,11 @@ class CatalogModal extends Component {
         this.addOREditItem = this.addOREditItem.bind(this);
     }    
     
-    renderAssetType(filters){   
+    renderAssetType(filters){  
         return filters.map((filter, index) => {
             if(index != 0){
                 return (
-                    <option value={filter.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase()} key={filter.key}>{filter.name}</option>
+                    <option value={filter.url.replace(ROOT_URL+'/api/home/assets/', '').toLowerCase()} key={filter.key}>{filter.name}</option>
                 )
             }
         })
@@ -107,9 +107,8 @@ class CatalogModal extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
         if(nextProps.itemMode !== "Add"){
-            const category = nextProps.itemValue.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase().split("/");
+            const category = nextProps.itemValue.url.replace(ROOT_URL+'/api/home/assets/','').toLowerCase().split("/");
             console.log(category[0]); 
             const itemValue = {
                 id:nextProps.itemValue.id,

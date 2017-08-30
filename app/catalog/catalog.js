@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Header from '../common/Header';
 import CatalogTable from './catalogTable';
 import CatalogModal from './catalogModal';
-import { assetTypeCountsData, assetData, catalogOptionsData, assetsOptionsData, catalogDeleteData, assetsDeleteData } from '../actions/index';
+import { assetTypeCountsData, assetData, catalogOptionsData, assetsOptionsData, catalogDeleteData, assetsDeleteData, ROOT_URL } from '../actions/index';
 
 class Catalog extends Component {
 
@@ -69,13 +69,13 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
     }
 
     deleteItem(item){
-        const category = item.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase().split("/");
+        const category = item.url.replace(ROOT_URL+'/api/home/assets/', '').toLowerCase().split("/");
         console.log(item.id, item.item.id, category[0]);
         this.props.catalogDeleteData(category[0]+"/", item.id, item.item.id, this.state.assetTypeValue , this.state.homeId);
     }
 
     updatePopup(item){
-        const category = item.url.replace('https://cloudhome-staging.herokuapp.com/api/home/assets/', '').toLowerCase().split("/");
+        const category = item.url.replace(ROOT_URL+'/api/home/assets/', '').toLowerCase().split("/");
         item.category = category[0];
         this.props.assetsOptionsData(item.category);
         this.props.catalogOptionsData(item.category);
