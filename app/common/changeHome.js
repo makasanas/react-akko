@@ -58,6 +58,7 @@ class ChangeHome extends Component {
                         {this.renderhouse(this.props.houses)}
                     </div>
                 </div>
+                <div className="overlay"></div>
             </div>
         );
     }

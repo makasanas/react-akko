@@ -173,7 +173,9 @@ class CatalogModal extends Component {
                     <div className="content addCatalog">
                         <div className="tilte clearfix">
                             <h1>{this.props.itemMode} Item </h1>
-                            <div className="btn" onClick={this.addOREditItem}>{this.props.itemMode} Item</div>
+                            <div className="close" onClick={this.props.closePopup.bind(this)}>
+                                <svg height="512px" id="Layer_1" viewBox="0 0 512 512" width="512px" ><path d="M437.5,386.6L306.9,256l130.6-130.6c14.1-14.1,14.1-36.8,0-50.9c-14.1-14.1-36.8-14.1-50.9,0L256,205.1L125.4,74.5  c-14.1-14.1-36.8-14.1-50.9,0c-14.1,14.1-14.1,36.8,0,50.9L205.1,256L74.5,386.6c-14.1,14.1-14.1,36.8,0,50.9  c14.1,14.1,36.8,14.1,50.9,0L256,306.9l130.6,130.6c14.1,14.1,36.8,14.1,50.9,0C451.5,423.4,451.5,400.6,437.5,386.6z"/></svg>
+                            </div>
                         </div>
                         <form name="salonForm" className="ng-pristine ng-valid-email ng-valid ng-valid-required">
                             <div className="group clearfix">
@@ -199,89 +201,89 @@ class CatalogModal extends Component {
                             <div className="group clearfix">
                                 <div className={ option.quantity ? 'input show' :  'input hide'}>
                                     <label >Quantity</label>
-                                    <input className={ errors.quantity ? 'error' :  ''}  ref="quantity" type="number" placeholder="4" value={this.state.itemValue.quantity} onChange={this.handleChange.bind(this, "quantity")}/>
+                                    <input className={ errors.quantity ? 'error' :  ''}  ref="quantity" type="number" value={this.state.itemValue.quantity} onChange={this.handleChange.bind(this, "quantity")}/>
                                     { errors.quantity && <p  className="error">{errors.quantity}</p>}
                                 </div>
                                 <div className={ option.notes ? 'input show' :  'input hide'}>
                                     <label>Notes</label>
-                                    <input ref="notes" type="text" placeholder="Outdoor" value={this.state.itemValue.notes} onChange={this.handleChange.bind(this, "notes")}/>
+                                    <input ref="notes" type="text" value={this.state.itemValue.notes} onChange={this.handleChange.bind(this, "notes")}/>
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.brand ? 'input show' :  'input hide'}>
                                     <label>Brand</label>
-                                    <input className={ errors.brand ? 'error' :  ''} ref="brand" type="text" placeholder="Philips" value={this.state.itemValue.brand}  onChange={this.handleChange.bind(this, "brand")} />
+                                    <input className={ errors.brand ? 'error' :  ''} ref="brand" type="text"  value={this.state.itemValue.brand}  onChange={this.handleChange.bind(this, "brand")} />
                                 </div>
                                 <div className={ option.manual_url ? 'input show' :  'input hide'} >
                                     <label>Manual</label>
-                                    <input className={ errors.manual_url ? 'error' :  ''} ref="manual_url" type="text" placeholder="http://www.anaheimmfg.com/product/quick-hot-tank-1300-watt-heating-element-1-year-warranty/" value={this.state.itemValue.manual_url}  onChange={this.handleChange.bind(this, "manual_url")} />
+                                    <input className={ errors.manual_url ? 'error' :  ''} ref="manual_url" type="text"  value={this.state.itemValue.manual_url}  onChange={this.handleChange.bind(this, "manual_url")} />
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.serial_number ? 'input show' :  'input hide'}>
                                     <label>Serial Number</label>
-                                    <input ref="serial_number" type="text" placeholder="D-1F5-00846-6"  value={this.state.itemValue.serial_number}  onChange={this.handleChange.bind(this, "serial_number")}/>
+                                    <input ref="serial_number" type="text" value={this.state.itemValue.serial_number}  onChange={this.handleChange.bind(this, "serial_number")}/>
                                 </div>
                                 <div className={ option.model_number ? 'input show' :  'input hide'}>
                                     <label>Model Number</label>
-                                    <input ref="model_number" type="text"  placeholder="WL-LED100"  value={this.state.itemValue.model_number}  onChange={this.handleChange.bind(this, "model_number")} />
+                                    <input ref="model_number" type="text"   value={this.state.itemValue.model_number}  onChange={this.handleChange.bind(this, "model_number")} />
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.replace_part_number ? 'input show' :  'input hide'}>
                                     <label>Replace partnum</label>
-                                    <input ref="replace_part_number" type="text" placeholder="34-21 Zion Arcade" value={this.state.itemValue.replace_part_number}  onChange={this.handleChange.bind(this, "replace_part_number")} />
+                                    <input ref="replace_part_number" type="text" value={this.state.itemValue.replace_part_number}  onChange={this.handleChange.bind(this, "replace_part_number")} />
                                 </div>
                                 <div className={ option.description ? 'input show' :  'input hide'}>
                                     <label>Description</label>
-                                    <input ref="description" type="text" placeholder="34-21 Zion Arcade" value={this.state.itemValue.description}  onChange={this.handleChange.bind(this, "description")}  />
+                                    <input ref="description" type="text" value={this.state.itemValue.description}  onChange={this.handleChange.bind(this, "description")}  />
                                 </div>
                             </div>
                             
                             <div className="group clearfix">
                                 <div className={ option.type ? 'input show' :  'input hide'}>
                                     <label>Lights type</label>
-                                    <input ref="type"  type="text" placeholder="Incandescent" value={this.state.itemValue.type}  onChange={this.handleChange.bind(this, "type")} />
+                                    <input ref="type"  type="text"  value={this.state.itemValue.type}  onChange={this.handleChange.bind(this, "type")} />
                                 </div>
                                 <div className={ option.shape ? 'input show' :  'input hide'}>
                                     <label>Lights shape</label>
-                                    <input ref="shape" type="text" placeholder="Reflector/Flood" value={this.state.itemValue.shape}  onChange={this.handleChange.bind(this, "shape")} />
+                                    <input ref="shape" type="text" value={this.state.itemValue.shape}  onChange={this.handleChange.bind(this, "shape")} />
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.bulb_size ? 'input show' :  'input hide'}>
                                     <label>Lights bulbsize</label>
-                                    <input ref="bulb_size" type="text" placeholder="Medium"  value={this.state.itemValue.bulb_size}  onChange={this.handleChange.bind(this, "bulb_size")} />
+                                    <input ref="bulb_size" type="text" value={this.state.itemValue.bulb_size}  onChange={this.handleChange.bind(this, "bulb_size")} />
                                 </div>
                                 <div className={ option.base ? 'input show' :  'input hide'}>
                                     <label>Lights base</label>
-                                    <input ref="base" type="text" placeholder="Medium" value={this.state.itemValue.base}  onChange={this.handleChange.bind(this, "base")} />
+                                    <input ref="base" type="text" value={this.state.itemValue.base}  onChange={this.handleChange.bind(this, "base")} />
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.watts ? 'input show' :  'input hide'}>
                                     <label>Lights watts</label>
-                                    <input ref="watts" type="text" placeholder="65" value={this.state.itemValue.watts}  onChange={this.handleChange.bind(this, "watts")}  />
+                                    <input ref="watts" type="text" value={this.state.itemValue.watts}  onChange={this.handleChange.bind(this, "watts")}  />
                                 </div>
                                 <div className={ option.max_watts ? 'input show' :  'input hide'}>
                                     <label>Lights maxwatts</label>
-                                    <input ref="max_watts" type="text" placeholder="40" value={this.state.itemValue.max_watts}  onChange={this.handleChange.bind(this, "max_watts")} />
+                                    <input ref="max_watts" type="text" value={this.state.itemValue.max_watts}  onChange={this.handleChange.bind(this, "max_watts")} />
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.lumens ? 'input show' :  'input hide'}>
                                     <label>Lights lumens</label>
-                                    <input ref="lumens" type="text" placeholder="620" value={this.state.itemValue.lumens}  onChange={this.handleChange.bind(this, "lumens")}  />
+                                    <input ref="lumens" type="text" value={this.state.itemValue.lumens}  onChange={this.handleChange.bind(this, "lumens")}  />
                                 </div>
                                 <div className={ option.color ? 'input show' :  'input hide'}>
                                     <label>Lights color</label>
-                                    <input ref="color" type="text" placeholder="China White" value={this.state.itemValue.color}  onChange={this.handleChange.bind(this, "color")}  />
+                                    <input ref="color" type="text" value={this.state.itemValue.color}  onChange={this.handleChange.bind(this, "color")}  />
                                 </div>
                             </div>
                             <div className="group clearfix">
                                 <div className={ option.fixture ? 'input show' :  'input hide'}>
                                     <label>Lights fixture</label>
-                                    <input ref="fixture" type="text" placeholder="Recessed Can" value={this.state.itemValue.fixture}  onChange={this.handleChange.bind(this, "fixture")}  />
+                                    <input ref="fixture" type="text" value={this.state.itemValue.fixture}  onChange={this.handleChange.bind(this, "fixture")}  />
                                 </div>
                             </div>
                             <div className="single clearfix">

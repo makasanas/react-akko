@@ -49,9 +49,7 @@ class ForgetPassword extends Component {
             });    
         }
     }
-
     
-
     render(){
         const { server, errors, serverError } = this.state;
         return (

@@ -107,11 +107,11 @@ typeof this.props.location.state.assetTypeValue != null ? this.props.location.st
                                 </select>
                             </div>
                         </div>
-                        <div className="right">
+                        {/* <div className="right">
                             <div className="input">
                                 <input type="text" placeholder="Search item" />
                             </div>
-                        </div>
+                        </div> */}
                     </div>      
                     <CatalogTable homeId={this.props.homeId} asset={this.props.asset} assetTypeChange={this.assetTypeChange} assetTypeValue={this.state.assetTypeValue} updatePopup={this.updatePopup} deleteItem={this.deleteItem}/>
                 </div>

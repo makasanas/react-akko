@@ -122,6 +122,29 @@ export function assetsPostData(category,data) {
 }
 
 
+export const catalogUpdate = 'catalogUpdate';		
+export function catalogUpdateData(category,data,id,itemId) {
+	const request = axios.put(`${ROOT_URL}/api/catalog/`+category+itemId, data);	
+
+	return dispatch => {
+		dispatch({ type: catalogUpdate, payload:request }).then(function(res){
+			console.log(res);
+			data['item'] = itemId;
+			console.log(data);
+			return dispatch(assetsUpdateData(category, data, id));
+		})
+	};
+}
+
+export const assetsUpdate = 'assetsUpdate';		
+export function assetsUpdateData(category,data,id) {			
+	const request = axios.put(`${ROOT_URL}/api/home/assets/`+category+id, data);						
+	return{
+		type:assetsUpdate,	
+		payload:request
+	};
+}
+
 export const catalogDelete = 'catalogDelete';		
 export function catalogDeleteData(category,id,itemId,type,homeId) {
 	const request = axios.delete(`${ROOT_URL}/api/catalog/`+category+itemId);	
