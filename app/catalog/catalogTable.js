@@ -67,7 +67,7 @@ class CatalogTable extends Component {
                                 </div>
                             </td>
                             <td>{item.asset_type_name}</td>
-                            <td> <img src={item.asset_images[0].image} /></td>
+                            <td><img src={item.asset_images[0].image} /></td>
                             <td>{item.location.name}</td>
                             <td>{item.quantity}</td>
                             <td>{item.item.brand}</td>
@@ -105,6 +105,7 @@ class CatalogTable extends Component {
                         <tr>
                             <th></th>       
                             <th>Category</th>
+                            <th>Image</th>
                             <th>Location Name</th>
                             <th>Quantity</th>
                             <th>Brand</th>
