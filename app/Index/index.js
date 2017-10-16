@@ -28,7 +28,7 @@ class Index extends React.Component {
                         {
                             Header: "First Name",
                             id: "firstName",
-                            accessor: d => d.lastName,
+                            accessor: d => d.firstName,
                             filterMethod: (filter, rows) =>
                                 matchSorter(rows, filter.value, { keys: ["firstName"] }),
                             filterAll: true
