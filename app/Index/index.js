@@ -27,10 +27,11 @@ class Index extends React.Component {
                     columns={[
                         {
                             Header: "First Name",
-                            accessor: "firstName",
-                            filterMethod: (filter, row) =>
-                                row[filter.id].startsWith(filter.value) &&
-                                row[filter.id].endsWith(filter.value)
+                            id: "firstName",
+                            accessor: d => d.lastName,
+                            filterMethod: (filter, rows) =>
+                                matchSorter(rows, filter.value, { keys: ["firstName"] }),
+                            filterAll: true
                         },
                         {
                             Header: "Last Name",
